@@ -1,22 +1,22 @@
 # FlexNet as systemd service
 
-FlexNet is a common license server from [Flexera Software](https://www.flexera.com) used with large number of software e.g. Abaqus. It is a server-client architecture license management software which provides floating licenses to multiple users of software. The license is checked-out when a user starts to use the software and checked-in when a user finishes working with it.
-
-The FlexNet server is designed to give remote access to licenses usually in a local network. The FlexNet server consists of the license manager daemon `lmgrd` and vendor(s) daemon(s). Both license manager and vendor daemons work with open TCP ports to communicate with clients - programs which check license on the server.
+FlexNet is a common license server from [Flexera Software](https://www.flexera.com) used with large number of software e.g. Abaqus. It is a server-client architecture license management software. The FlexNet server is designed to give remote access to licenses usually in a local network. The FlexNet server consists of the license manager daemon `lmgrd` and vendor(s) daemon(s). Both license manager and vendor daemons work with open TCP ports to communicate with clients - programs which check license on the server.
 
 Usually the FlexNet installation procedure is combined with the installation of the software which uses FlexNet as license server. It's generally quite straightforward and well documented procedure. Unfortunately the default, post-installation configuration of the FlexNet server is very basic, inconvenient to administrate and last but not least it is not secure.
 
-Please find below the configuration instruction of the FLexNet installed with Abaqus ([DS SIMULIA](https://www.3ds.com/products-services/simulia/)) on the systemd-based Linux machine which:
+Please find below the instruction of configuration for the FLexNet installed with Abaqus ([DS SIMULIA](https://www.3ds.com/products-services/simulia/)) on the systemd-based Linux (e.g. RHEL/CentOS 7) machine which:
 - is run as a dedicated user and group,
 - saves log files in specified directory (e.g. /var/log/),
 - is started automatically at the system restart,
 - can be started, stopped and reloaded using systemctl command.
 
+The instruction can be easly adopted in the case on any other vendors.
+
 The short instruction on how to configure Flexnet and firewall is provided as well.
 
 ## Create user & group
 
-The FlexNet server should be run as a dedicated (non-root) user with restricted privileges (e.g. no login, limited access to files and directories). Moreover, on Linux usage of `lmdown`, `lmreread`, and `lmremove` is restricted to a license administrator who is by default root. Because we don't want to manage the FlexNet server using the root account the dedicated group called lmadmin is created. Thanks to this using `-2 -p` and `-local` option the usage of the server management commands is restricted to members of that group only.
+The FlexNet server should be run as a dedicated (non-root) user with restricted privileges (e.g. no login, limited access to files and directories). Moreover, on Linux usage of `lmdown`, `lmreread`, and `lmremove` commands is restricted to a license administrator who is by default root. Because we don't want to manage the FlexNet server using the root account the dedicated group called lmadmin is created. Thanks to this using `-2 -p` and `-local` option the usage of the server management commands is restricted to members of that group only.
 
 To create lmadmin group use command:
 ```
@@ -55,7 +55,7 @@ $ ls -al /etc/flexnet.conf
 ```
 ##Creating and installing a systemd service unit
 
-Create a systemd service unit in any (e.g. home) directory:
+Create a systemd service unit file in any (e.g. home) directory:
 ```
 $ cat flexnet.service
 [Unit]
@@ -79,7 +79,7 @@ RestartSec=120
 [Install]
 WantedBy=multi-user.target
 ```
-To install the service - copy the service file into the /etc/systemd/system directory:
+To install the service - copy the service unit file into the /etc/systemd/system directory:
 ```
 $ sudo cp flexnet.service /etc/systemd/system
 $ sudo chmod 664 /etc/systemd/system/flexnet.service
@@ -102,7 +102,7 @@ To check if the service is running you can use the following command:
 ```
 $ sudo systemctl is-active flexnet
 ```
-To check the service status use command:
+To check the service status (status of service, not license server) use command:
 ```
 $ sudo systemctl status flexnet
 ```
@@ -116,7 +116,7 @@ $ sudo systemctl stop flexnet
 ```
 ## FlexNet & firewall configuration
 
-The correctly configured and run firewall  is a critical part of server security for most cases. Firewall configuration on the Linux server  is not discussed here. However, if the firewall is activated its configuration has to be modified to enable access to the license server for other computers in the local network.
+The correctly configured and run firewall is a critical part of the server security for most cases. The firewall configuration on the Linux server is not discussed here. However, if the firewall is activated its configuration has to be modified to enable access to the license server from other computers in the local network.
 
 To see the status of the firewall service use the following command:
 ```
@@ -141,9 +141,11 @@ No output means the port is free and can be used for vendor daemon.
 
 To open ports use the following commands:
 ```
-$ sudo firewall-cmd --zone=specific_zones --add-port=27000/TCP
-$ sudo firewall-cmd --zone=specific_zones --add-port=53153/TCP
+$ sudo firewall-cmd [--zone=specific_zones] --add-port=27000/TCP
+$ sudo firewall-cmd [--zone=specific_zones] --add-port=53153/TCP
 ```
+The `--zone` parameter is optional and when it is omitted the default zone is modified. Please be careful with that and use the appropriate zone for the local network.
+
 Check if license servers is available for expected remont machines and make the new settings persistent:
 ```
 $ sudo firewall-cmd --runtime-to-permanent
