@@ -24,7 +24,7 @@ $ sudo groupadd lmadmin
 ```
 To create flexnet user use command:
 ```
-$ sudo useradd flexnet -d /opt/abaqus/License -c "FlexnetLM User" -g lmadmin -s /sbin/nologin
+$ sudo useradd flexnet -d /opt/abaqus/License -c "FlexNet User" -g lmadmin -s /sbin/nologin
 ```
 ## Create configuration and log files
 
@@ -34,7 +34,7 @@ $ sudo > /var/log/flexnet.log
 ```
 Create configuration file to set up license and log files locations:
 ```
-$ cat /etc/flexlm.conf
+$ cat /etc/flexnet.conf
 FLEXLICDIR=/opt/abaqus/License
 FLEXLOGDIR=/var/log
 FLEXLICFILE=abaquslm.lic
@@ -45,19 +45,19 @@ Set permissions:
 $ sudo chown -R flexnet:lmadmin /usr/SIMULIA/License/2021/linux_a64/code/bin
 $ sudo chown -R flexnet:lmadmin /opt/abaqus/License
 $ sudo chown -R flexnet:lmadmin /var/log/flexnet.log
-$ sudo chown flexnet:lmadmin /etc/flexlm.conf
+$ sudo chown flexnet:lmadmin /etc/flexnet.conf
 ```
 Check permissions:
 ```
-$ ls -al /etc/flexlm.conf
--rw-rw-r-- 1 flexnet lmadmin 206 01-05 01:27 /etc/flexlm.conf
+$ ls -al /etc/flexnet.conf
+-rw-rw-r-- 1 flexnet lmadmin 206 01-05 01:27 /etc/flexnet.conf
 …
 ```
 ##Creating and installing a systemd service unit
 
 Create a systemd service unit in any (e.g. home) directory:
 ```
-$ cat flexlm.service
+$ cat flexnet.service
 [Unit]
 Description=FlexNet Licence Server
 Requires=network.target
@@ -81,10 +81,10 @@ WantedBy=multi-user.target
 ```
 To install the service - copy the service file into the /etc/systemd/system directory:
 ```
-$ sudo cp flexlm.service /etc/systemd/system
-$ sudo chmod 664 /etc/systemd/system/flexlm.service
+$ sudo cp flexnet.service /etc/systemd/system
+$ sudo chmod 664 /etc/systemd/system/flexnet.service
 ```
-Notify systemd that a new flexlm.service file exists: 
+Notify systemd that a new flexnet.service file exists: 
 ```
 $ sudo systemctl daemon-reload
 ```
@@ -92,27 +92,27 @@ $ sudo systemctl daemon-reload
 
 Enable the service to start it automatically at the next system restart:
 ```
-$ sudo systemctl enable flexlm
+$ sudo systemctl enable flexnet
 ```
 To run the service use command:
 ```
-$ sudo systemctl start flexlm
+$ sudo systemctl start flexnet
 ```
 To check if the service is running you can use the following command:
 ```
-$ sudo systemctl is-active flexlm
+$ sudo systemctl is-active flexnet
 ```
 To check the service status use command:
 ```
-$ sudo systemctl status flexlm
+$ sudo systemctl status flexnet
 ```
 To reload license file (e.g. to extend or updated license) first modify the license file and then run command:
 ```
-$ sudo systemctl reload flexlm
+$ sudo systemctl reload flexnet
 ```
 To stop the service just use command:
 ```
-$ sudo systemctl stop flexlm
+$ sudo systemctl stop flexnet
 ```
 ## FlexNet & firewall configuration
 
