@@ -1,12 +1,12 @@
 # FlexNet as systemd service
 
-FlexNet is a common license server from Flexera Software used with large number of software e.g. Abaqus. It is a server-client architecture license management software which provides floating licenses to multiple users of software. The license is checked-out when a user starts to use the software and checked-in when a user finishes working with it.
+FlexNet is a common license server from [Flexera Software](https://www.flexera.com) used with large number of software e.g. Abaqus. It is a server-client architecture license management software which provides floating licenses to multiple users of software. The license is checked-out when a user starts to use the software and checked-in when a user finishes working with it.
 
 The FlexNet server is designed to give remote access to licenses usually in a local network. The FlexNet server consists of the license manager daemon `lmgrd` and vendor(s) daemon(s). Both license manager and vendor daemons work with open TCP ports to communicate with clients - programs which check license on the server.
 
-Usually the FlexNet installation procedure is combined with the installation of the software which uses FlexNet as license server. It's generally quite straightforward and a well documented procedure. Unfortunately the default, post-installation configuration of the FlexNet server is very basic, inconvenient to administrate and last but not least it is not secure.
+Usually the FlexNet installation procedure is combined with the installation of the software which uses FlexNet as license server. It's generally quite straightforward and well documented procedure. Unfortunately the default, post-installation configuration of the FlexNet server is very basic, inconvenient to administrate and last but not least it is not secure.
 
-Please find below the instructions for FLexNet configuration on the systemd-based Linux machine which:
+Please find below the configuration instruction of the FLexNet installed with Abaqus ([DS SIMULIA](https://www.3ds.com/products-services/simulia/)) on the systemd-based Linux machine which:
 - is run as a dedicated user and group,
 - saves log files in specified directory (e.g. /var/log/),
 - is started automatically at the system restart,
