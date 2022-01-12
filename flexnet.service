@@ -14,7 +14,6 @@ ExecStart=/usr/SIMULIA/License/2020/linux_a64/code/bin/lmgrd -c ${FLEXLICDIR}/${
 ExecReload=/usr/SIMULIA/License/2020/linux_a64/code/bin/lmreread -c ${FLEXLICDIR}/${FLEXLICFILE} -all
 ExecStop=/usr/SIMULIA/License/2020/linux_a64/code/bin/lmdown -c ${FLEXLICDIR}/${FLEXLICFILE} -q
 SuccessExitStatus=15
-Restart=always
 
 [Install]
 WantedBy=multi-user.target
