@@ -1,20 +1,20 @@
 [Unit]
-Description=FlexNet Licence Server 
+Description=FlexNet Licence Server
 Requires=network.target
 After=local_fs.target network.target
 
 [Service]
+EnvironmentFile=/etc/flexnet.conf
 Type=simple
 User=flexnet
 Group=lmadmin
 Restart=always
-WorkingDirectory=/usr/SIMULIA/License/2021/linux_a64/code/bin
-ExecStart=/usr/SIMULIA/License/2021/linux_a64/code/bin/lmgrd -z -2 -p -c /opt/abaqus/License/abaquslm.lic -l +/var/log/flexnet.log -local
-ExecReload=/usr/SIMULIA/License/2021/linux_a64/code/bin/lmreread -c /opt/abaqus/License/abaquslm.lic -all
-ExecStop=/usr/SIMULIA/License/2021/linux_a64/code/bin/lmdown -c /opt/abaqus/License/abaquslm.lic -q
+WorkingDirectory=/usr/SIMULIA/License/2020/linux_a64/code/bin
+ExecStart=/usr/SIMULIA/License/2020/linux_a64/code/bin/lmgrd -c ${FLEXLICDIR}/${FLEXLICFILE} -l +${FLEXLOGDIR}/${FLEXLOGFILE} -z -2 -p -local
+ExecReload=/usr/SIMULIA/License/2020/linux_a64/code/bin/lmreread -c ${FLEXLICDIR}/${FLEXLICFILE} -all
+ExecStop=/usr/SIMULIA/License/2020/linux_a64/code/bin/lmdown -c ${FLEXLICDIR}/${FLEXLICFILE} -q
 SuccessExitStatus=15
 Restart=always
-RestartSec=120
 
 [Install]
 WantedBy=multi-user.target
