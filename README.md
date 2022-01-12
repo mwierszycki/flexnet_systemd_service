@@ -30,7 +30,7 @@ $ sudo useradd flexnet -d /opt/abaqus/License -c "FlexNet User" -g lmadmin -s /s
 
 Placed log file in dedicated directory using command:
 ```
-$ sudo > /var/log/flexnet.log
+$ sudo touch /var/log/flexnet.log
 ```
 Create configuration file to set up license and log files locations:
 ```
@@ -44,7 +44,7 @@ Set permissions:
 ```
 $ sudo chown -R flexnet:lmadmin /usr/SIMULIA/License/2021/linux_a64/code/bin
 $ sudo chown -R flexnet:lmadmin /opt/abaqus/License
-$ sudo chown -R flexnet:lmadmin /var/log/flexnet.log
+$ sudo chown flexnet:lmadmin /var/log/flexnet.log
 $ sudo chown flexnet:lmadmin /etc/flexnet.conf
 ```
 Check permissions:
@@ -53,7 +53,7 @@ $ ls -al /etc/flexnet.conf
 -rw-rw-r-- 1 flexnet lmadmin 206 01-05 01:27 /etc/flexnet.conf
 …
 ```
-##Creating and installing a systemd service unit
+## Creating and installing a systemd service unit
 
 Create a systemd service unit file in any (e.g. home) directory:
 ```
@@ -64,21 +64,23 @@ Requires=network.target
 After=local_fs.target network.target
 
 [Service]
+EnvironmentFile=/etc/flexnet.conf
 Type=simple
 User=flexnet
 Group=lmadmin
 Restart=always
-WorkingDirectory=/usr/SIMULIA/License/2021/linux_a64/code/bin
-ExecStart=/usr/SIMULIA/License/2021/linux_a64/code/bin/lmgrd -z -2 -p -c /opt/abaqus/License/abaquslm.lic -l +/var/log/flexnet.log -local
-ExecReload=/usr/SIMULIA/License/2021/linux_a64/code/bin/lmreread -c /opt/abaqus/License/abaquslm.lic -all
-ExecStop=/usr/SIMULIA/License/2021/linux_a64/code/bin/lmdown -c /opt/abaqus/License/abaquslm.lic -q
+WorkingDirectory=/usr/SIMULIA/License/2022/linux_a64/code/bin
+ExecStart=/usr/SIMULIA/License/2022/linux_a64/code/bin/lmgrd -c ${FLEXLICDIR}/${FLEXLICFILE} -l +${FLEXLOGDIR}/${FLEXLOGFILE} -z -2 -p -local
+ExecReload=/usr/SIMULIA/License/2022/linux_a64/code/bin/lmreread -c ${FLEXLICDIR}/${FLEXLICFILE} -all
+ExecStop=/usr/SIMULIA/License/2022/linux_a64/code/bin/lmdown -c ${FLEXLICDIR}/${FLEXLICFILE} -q
 SuccessExitStatus=15
 Restart=always
-RestartSec=120
 
 [Install]
 WantedBy=multi-user.target
 ```
+Please check and modify (if required)  the paths to director where FlexNet is installed.
+
 To install the service - copy the service unit file into the /etc/systemd/system directory:
 ```
 $ sudo cp flexnet.service /etc/systemd/system
