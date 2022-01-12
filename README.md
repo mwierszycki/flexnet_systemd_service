@@ -129,7 +129,7 @@ If command output is running that means the firewall is run. Please follow the i
 First set up two ports for lmgrd and vendor demons in the license file:
 ```
 $ cat /opt/abaqus/License/abaquslm.lic
-SERVER this_host 001a4b53fdfc 27000
+SERVER this_host 6f9a7d0f33eb 27000
 VENDOR ABAQUSLM PORT=53153
 …
 ```
