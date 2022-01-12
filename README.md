@@ -4,7 +4,7 @@ FlexNet is a common license server from [Flexera Software](https://www.flexera.c
 
 Usually the FlexNet installation procedure is combined with the installation of the software which uses FlexNet as license server. It's generally quite straightforward and well documented procedure. Unfortunately the default, post-installation configuration of the FlexNet server is very basic, inconvenient to administrate and last but not least it is not secure.
 
-Please find below the instruction of configuration for the FLexNet installed with Abaqus ([DS SIMULIA](https://www.3ds.com/products-services/simulia/)) on the systemd-based Linux (e.g. RHEL/CentOS 7) machine which:
+Please find below the instruction of configuration the FLexNet server installed with Abaqus ([DS SIMULIA](https://www.3ds.com/products-services/simulia/)) on the systemd-based Linux distribiutions (e.g. RHEL/CentOS 7) machine which:
 - is run as a dedicated user and group,
 - saves log files in specified directory (e.g. /var/log/),
 - is started automatically at the system restart,
@@ -12,7 +12,7 @@ Please find below the instruction of configuration for the FLexNet installed wit
 
 The instruction can be easly adopted in the case on any other vendors.
 
-The short instruction on how to configure Flexnet and firewall is provided as well.
+The short instruction on how to configure FlexNet and firewall is provided as well.
 
 ## Create user & group
 
@@ -88,7 +88,7 @@ Notify systemd that a new flexnet.service file exists:
 ```
 $ sudo systemctl daemon-reload
 ```
-## Mange a FlexNet service
+## Manage a FlexNet service
 
 Enable the service to start it automatically at the next system restart:
 ```
@@ -116,7 +116,7 @@ $ sudo systemctl stop flexnet
 ```
 ## FlexNet & firewall configuration
 
-The correctly configured and run firewall is a critical part of the server security for most cases. The firewall configuration on the Linux server is not discussed here. However, if the firewall is activated its configuration has to be modified to enable access to the license server from other computers in the local network.
+The correctly configured and run firewall is a critical part of the server security for the most cases. The firewall configuration on the Linux server is not discussed here. However, if the firewall is activated its configuration has to be modified to enable access to the license server from other computers in the local network.
 
 To see the status of the firewall service use the following command:
 ```
