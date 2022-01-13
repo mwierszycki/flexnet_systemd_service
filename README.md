@@ -133,7 +133,7 @@ SERVER this_host 6f9a7d0f33eb 27000
 VENDOR ABAQUSLM PORT=53153
 …
 ```
-The port 27000 is default for `lmgrd` (server) daemon. By default vendor daemon port is assigned automatically and is changed on the occasion of each lmgrd restart. For firewall configuration vendor daemon has to be set up permanently and can be any valid number of unused unprivileged ports in the range 1025 to 65535. To check if the selected port is free use command:
+The port 27000 is default for `lmgrd` (server) daemon. By default vendor daemon port is assigned automatically and is changed on the occasion of each lmgrd restart. For firewall configuration vendor daemon port has to be set up permanently and can be any valid number of unused unprivileged ports in the range 1025 to 65535. To check if the selected port is free use command:
 ```
 $ netstat -ltn | grep 53153
 $
