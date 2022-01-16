@@ -124,7 +124,7 @@ To see the status of the firewall service use the following command:
 $ sudo firewall-cmd --state
 running
 ```
-If command output is running that means the firewall is run. Please follow the instructions below to configure the firewall to make the license server accessible in the local network. Please note, that open access to the license server from the public network is not recommended due to legal and security reasons.
+If command output is `running` that means the firewall is run. Please follow the instructions below to configure the firewall to make the license server accessible in the local network. Please note, that open access to the license server from the public network is not recommended due to legal and security reasons.
 
 First set up two ports for lmgrd and vendor demons in the license file:
 ```
